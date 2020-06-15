@@ -1,0 +1,2 @@
+FLASK_APP=MDWebApp.py
+FLASK_ENV=development

@@ -5,6 +5,7 @@ from flask_basicauth import BasicAuth
 import markdown
 import os
 import shutil
+import SparkScript
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
@@ -34,25 +35,22 @@ def index():
 
 	return render_template('index.html', MDContent = MDContent, Routes = context_routes)
 
-@app.route("/<fold>")
-def render_routes(fold):
-	if fold not in context_routes:
-		return redirect('/')
+@app.route('/Spark', methods = ['GET'])
+def SparkMainProgram():
+	return 'Yo'
+	# if request.method == 'POST':
+	# 	PARAMETERS = request.json
+	# 	#--------------INPUTS-----------------#
+	# 	CLUSTER_ID = PARAMETERS["cluster_id"]
+	# 	APPLICATION_ID = PARAMETERS["application_id"]
+	# 	KEY_WORD = PARAMETERS["keyword"].lower()#comma separated inputs for keyword search in the entire logs
+	# 	EXCLUSIVE = PARAMETERS["exclusive"] #set to true when keyword search is done from second page else false.
+	# 	LOGPATH=str(PARAMETERS["logspath"])
+	# 	response=SparkScript.MainProgram(CLUSTER_ID,APPLICATION_ID,KEY_WORD,EXCLUSIVE,LOGPATH)
 
-	folder_contents = os.listdir(os.path.join(context_routes_folder,fold))
-
-	MDContent = []
-	for md_file in folder_contents:
-		with open(os.path.join(context_routes_folder,fold,md_file)) as mdfile:
-			MDContent.append([markdown.markdown(mdfile.read(), extensions=['fenced_code','codehilite']),md_file,ctime(os.path.getctime(os.path.join(context_routes_folder,fold,md_file)))])
-	return render_template('context_md.html',MDContent = MDContent)
-
-for item in os.listdir(context_routes_folder):
-	if not os.path.isfile(os.path.join(context_routes_folder,item)):
-		context_routes.append(item)
-
-if len(context_routes) == 0:
-	context_routes = None
+	# 	return response
+	# else :
+	# 	return "hello"
 
 
 @app.route('/pagemanager', methods = ['GET','POST'])

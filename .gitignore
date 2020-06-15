@@ -1,3 +1,7 @@
 #Ignore Python Binaries
 
 webappenv/
+
+
+#Ignore Node Modules 
+sparklogs/node_modules/
